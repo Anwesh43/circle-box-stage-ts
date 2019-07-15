@@ -32,6 +32,44 @@ class ScaleUtil {
     }
 }
 
+class DrawingUtil {
+    static drawStrokedCircle(context : CanvasRenderingContext2D, r : number, sc : number) {
+        context.beginPath()
+        for (var i = -90; i <= -90 + 360 * sc; i++) {
+            const x : number = r * Math.cos(i * Math.PI / 180)
+            const y : number = r * Math.sin(i * Math.PI / 180)
+            if (i == -90) {
+                context.moveTo(x, y)
+            } else {
+                context.lineTo(x, y)
+            }
+        }
+        context.stroke()
+    }
+
+    static drawBoxCircle(context : CanvasRenderingContext2D, size : number, sc1 : number, sc2 : number) {
+        const r : number = size / 2
+        context.strokeRect(-size, -size / 2, size, size + size * sc2)
+        for (var i = 0; i < 2; i++) {
+            context.save()
+            context.translate(0, -r + 2 * r * sc2 * i)
+            DrawingUtil.drawStrokedCircle(context, r, sc1)
+            contest.restore()
+        }
+    }
+
+    static drawCBNode(context : CanvasRenderingContext2D, i : number, scale : number) {
+        const gap : number = w / (gaps + 1)
+        const size : number = gap / sizeFactor
+        const sc1 : number = ScaleUtil.divideScale(scale, 0, 2)
+        const sc2 : number = ScaleUtil.divideScale(scale, 1, 2)
+        context.save()
+        context.translate(gap * (i + 1), h / 2)
+        DrawingUtil.drawBoxCircle(context, size, sc1, sc2)
+        context.restore()
+    }
+}
+
 class CircleBoxStage {
 
     canvas : HTMLCanvasElement = document.createElement('canvas')
