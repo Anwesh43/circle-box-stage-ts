@@ -74,6 +74,7 @@ class CircleBoxStage {
 
     canvas : HTMLCanvasElement = document.createElement('canvas')
     context : CanvasRenderingContext2D
+    renderer : Renderer = new Renderer()
 
     initCanvas() {
         this.canvas.width = w
@@ -85,11 +86,14 @@ class CircleBoxStage {
     render() {
         this.context.fillStyle = backColor
         this.context.fillRect(0, 0, w, h)
+        this.renderer.render(this.context)
     }
 
     handleTap() {
         this.canvas.onmousedown = () => {
-
+            this.renderer.handleTap(() => {
+                this.renderer.render()
+            })
         }
     }
 
@@ -102,7 +106,7 @@ class CircleBoxStage {
 }
 
 class State {
-    scale : number = 0
+    scale : number = 0s
     dir : number = 0
     prevScale : number = 0
 
